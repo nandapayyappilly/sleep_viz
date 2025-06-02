@@ -84,6 +84,8 @@ function renderCortisolMelatoninChart(avgCortisolBeforeSleep, avgCortisolWakeUp,
         .attr("class", "chart-title")
         .attr("x", width / 2)
         .attr("y", 20)
+        .attr("font-size", "24px")
+        .attr("font-weight", "bold")
         .text("Cortisol & Melatonin Levels: Before Sleep vs Wake Up");
 
     // Define log scales for cortisol & melatonin
@@ -948,7 +950,7 @@ function renderSleepArc(sleepInfo) {
 
 // Convert angle to coordinates
             const tooltipX = Math.cos(midAngle) * (radius / 1.5) + width / 2; // Adjust for clock position
-            const tooltipY = Math.sin(midAngle) * (radius / 1.5) + height / 2;
+            const tooltipY = Math.sin(midAngle) * (radius / 1.5) + height / 2 + 40;
 
 // Position tooltip at the correct spot above the sleep arc
             tooltip_sleep
@@ -1144,7 +1146,7 @@ function renderHeartRateGraph(hrData, sleepInfo) {
         .attr("dy", "1em")
         .style("text-anchor", "middle")
         .style("font-size", "12px")
-        .style("fill", "black")
+        .style("fill", "white")
         .style("font-weight", "bold")
         .text("Heart Rate (BPM)");
     
@@ -1152,7 +1154,7 @@ function renderHeartRateGraph(hrData, sleepInfo) {
         .attr("transform", `translate(${width / 2}, ${height + 35})`)
         .style("text-anchor", "middle")
         .style("font-size", "12px")
-        .style("fill", "black")
+        .style("fill", "white")
         .style("font-weight", "bold")
         .text("Time");
     
@@ -2116,6 +2118,7 @@ let sleepData = [];
                 .attr("class", "axis-label")
                 .attr("transform", `translate(${chartWidth/2}, ${chartHeight + 35})`)
                 .style("text-anchor", "middle")
+                .style("fill", "black")
                 .text("Sleep Duration (hours)");
             
             g.append("text")
@@ -2125,6 +2128,7 @@ let sleepData = [];
                 .attr("x", 0 - (chartHeight / 2))
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
+                .style("fill", "black")
                 .text("Sleep Efficiency (%)");
             
             updateEfficiencyChart(g, xScale, yScale);
@@ -2201,6 +2205,7 @@ let sleepData = [];
                 .attr("class", "axis-label")
                 .attr("transform", `translate(${chartWidth/2}, ${chartHeight + 35})`)
                 .style("text-anchor", "middle")
+                .style("fill", "black")
                 .text("Stress Level");
             
             g.append("text")
@@ -2210,6 +2215,7 @@ let sleepData = [];
                 .attr("x", 0 - (chartHeight / 2))
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
+                .style("fill", "black")
                 .text("Average WASO (min)");
             
             // Bars
@@ -2269,6 +2275,7 @@ let sleepData = [];
                 .attr("class", "axis-label")
                 .attr("transform", `translate(${chartWidth/2}, ${chartHeight + 35})`)
                 .style("text-anchor", "middle")
+                .style("fill", "black")
                 .text("Sleep Latency (min)");
             
             g.append("text")
@@ -2278,6 +2285,7 @@ let sleepData = [];
                 .attr("x", 0 - (chartHeight / 2))
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
+                .style("fill", "black")
                 .text("Frequency");
             
             // Bars
@@ -2323,6 +2331,7 @@ let sleepData = [];
                 .attr("class", "axis-label")
                 .attr("transform", `translate(${chartWidth/2}, ${chartHeight + 35})`)
                 .style("text-anchor", "middle")
+                .style("fill", "black")
                 .text("Age");
             
             g.append("text")
@@ -2332,6 +2341,7 @@ let sleepData = [];
                 .attr("x", 0 - (chartHeight / 2))
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
+                .style("fill", "black")
                 .text("Number of Awakenings");
             
             // Dots
