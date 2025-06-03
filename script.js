@@ -1,5 +1,28 @@
 let currentUser = 1;
 
+function toggleSleepyMoon() {
+    const leftEye = document.getElementById('left-eye');
+    const rightEye = document.getElementById('right-eye');
+    
+    // Toggle sleepy state
+    leftEye.classList.toggle('sleepy');
+    rightEye.classList.toggle('sleepy');
+    
+    // Add a little bounce effect
+    const moonChar = document.querySelector('.moon-character');
+    moonChar.style.animation = 'none';
+    setTimeout(() => {
+        moonChar.style.animation = 'gentle-float 4s ease-in-out infinite';
+    }, 100);
+}
+
+// Auto-toggle sleepy state occasionally
+setInterval(() => {
+    if (Math.random() < 0.3) { // 30% chance every 5 seconds
+        toggleSleepyMoon();
+    }
+}, 5000);
+
 document.getElementById("toggleUserView").addEventListener("click", function() {
     const userSection = document.getElementById("userSpecificSection");
     const button = this;
