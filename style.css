@@ -458,9 +458,9 @@ body::before {
 }
 
 /* Tooltip Styling */
-#tooltip_mel {
-    position: absolute;
-    background: rgba(15, 23, 42, 0.95);
+#tooltip_density {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.95);
     color: #f1f5f9;
     border-radius: 12px;
     padding: 15px 20px;
@@ -470,22 +470,43 @@ body::before {
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(139, 92, 246, 0.3);
     opacity: 0;
     transition: opacity 0.3s ease;
-    transform: translate(-50%, -100%);
-    margin-top: -15px;
+    max-width: 300px;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(139, 92, 246, 0.3);
     font-weight: 500;
 }
 
+/* Tooltip Styling */
+#tooltip_mel {
+    position: fixed;
+    background: rgba(15, 23, 42, 0.95);
+    color: #f1f5f9;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 0.9rem;
+    z-index: 1000;
+    pointer-events: none;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    max-width: 300px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    /* Ensure proper positioning */
+    left: 0;
+    top: 0;
+}
+
 #tooltip_mel::after {
     content: '';
     position: absolute;
-    top: 100%;
+    bottom: 100%;  /* Changed from top: 100% to position above */
     left: 50%;
     margin-left: -8px;
     border-width: 8px;
     border-style: solid;
-    border-color: rgba(15, 23, 42, 0.95) transparent transparent transparent;
+    border-color: transparent transparent rgba(15, 23, 42, 0.95) transparent; /* Adjusted colors */
+    pointer-events: none;
 }
 
 .tooltip_mel-title {
@@ -2079,3 +2100,4 @@ body::before {
     border-radius: 5px;
     font-size: 14px;
 }
+

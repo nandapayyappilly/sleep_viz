@@ -146,6 +146,9 @@ function renderCortisolMelatoninChart(avgCortisolBeforeSleep, avgCortisolWakeUp,
         .attr("height", d => height - 60 - yScaleMelatonin(d.melatonin))
         .attr("fill", melatoninColor)
         .on("mouseover", function(event, d) {
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+
             // ✅ Use tooltip_mel instead of tooltip
             tooltip_mel.transition().duration(200).style("opacity", 1);
             tooltip_mel.html(`
@@ -155,8 +158,25 @@ function renderCortisolMelatoninChart(avgCortisolBeforeSleep, avgCortisolWakeUp,
                     <span class="tooltip_mel-value">${d.originalMelatonin.toFixed(2)} pg/mL</span>
                 </div>
             `)
-            .style("left", (event.pageX + 10) + "px")
-            .style("top", (event.pageY - 10) + "px");
+            .style("left", () => {
+                const tooltip = document.getElementById("tooltip_mel");
+                const left = Math.max(
+                    10, // ✅ Ensures tooltip stays at least 10px from the left edge
+                    Math.min(
+                        window.innerWidth - tooltip.offsetWidth - 10, // ✅ Prevents right-side overflow
+                        mouseX - tooltip.offsetWidth / 2 // ✅ Centers tooltip over cursor
+                    )
+                );
+                return `${left}px`;
+            })
+            .style("top", () => {
+                const tooltip = document.getElementById("tooltip_mel");
+                return `${Math.max(
+                    10, // ✅ Ensures it doesn't go off the top edge
+                    mouseY + 20 // ✅ Positions below cursor instead of above
+                )}px`;
+            })
+            
         })
         .on("mouseout", function() {
             // ✅ Use tooltip_mel instead of tooltip
@@ -174,6 +194,9 @@ function renderCortisolMelatoninChart(avgCortisolBeforeSleep, avgCortisolWakeUp,
         .attr("height", d => height - 60 - yScaleCortisol(d.cortisol))
         .attr("fill", cortisolColor)
         .on("mouseover", function(event, d) {
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+
             tooltip_mel.transition().duration(200).style("opacity", 1);
             tooltip_mel.html(`
                 <div class="tooltip_mel-title">Cortisol</div>
@@ -182,8 +205,24 @@ function renderCortisolMelatoninChart(avgCortisolBeforeSleep, avgCortisolWakeUp,
                     <span class="tooltip_mel-value">${d.originalCortisol.toFixed(2)} ng/mL</span>
                 </div>
             `)
-            .style("left", (event.pageX + 10) + "px")
-            .style("top", (event.pageY - 10) + "px");
+            .style("left", () => {
+                const tooltip = document.getElementById("tooltip_mel");
+                const left = Math.max(
+                    10, // ✅ Ensures tooltip stays at least 10px from the left edge
+                    Math.min(
+                        window.innerWidth - tooltip.offsetWidth - 10, // ✅ Prevents right-side overflow
+                        mouseX - tooltip.offsetWidth / 2 // ✅ Centers tooltip over cursor
+                    )
+                );
+                return `${left}px`;
+            })
+            .style("top", () => {
+                const tooltip = document.getElementById("tooltip_mel");
+                return `${Math.max(
+                    10, // ✅ Ensures it doesn't go off the top edge
+                    mouseY + 20 // ✅ Positions below cursor instead of above
+                )}px`;
+            })
         })
         .on("mouseout", function() {
             tooltip_mel.transition().duration(200).style("opacity", 0);
@@ -356,6 +395,14 @@ function renderDensityPlot(hrData) {
     
     // Clear previous graph
     d3.select("#dual-line-chart").selectAll("*").remove();
+
+    // Initialize tooltip properly
+    const tooltip_density = d3.select("#tooltip_density")
+        .style("opacity", 0)
+        .style("background", "rgba(0, 0, 0, 0.95)")
+        .html("")
+        .style("left", "0px") // Reset position
+        .style("top", "0px");
     
     const svg = d3.select("#dual-line-chart")
         .append("svg")
@@ -443,17 +490,6 @@ function renderDensityPlot(hrData) {
         .y1(d => yScale(d[1]))
         .curve(d3.curveCardinal);
     
-    // Create tooltip
-    const tooltip = d3.select("body").append("div")
-        .attr("class", "density-tooltip")
-        .style("position", "absolute")
-        .style("padding", "10px")
-        .style("background", "rgba(0, 0, 0, 0.8)")
-        .style("color", "white")
-        .style("border-radius", "5px")
-        .style("pointer-events", "none")
-        .style("font-size", "12px")
-        .style("opacity", 0);
 
     // Add sleep density curve (blue)
     if (sleepDensity.length > 0) {
@@ -473,6 +509,7 @@ function renderDensityPlot(hrData) {
             .attr("d", line)
             .style("cursor", "crosshair")
             .on("mouseover", function(event, d) {
+                const tooltip_density = d3.select("#tooltip_density");
                 d3.select(this).attr("stroke-width", 5);
             })
             .on("mousemove", function(event, d) {
@@ -497,11 +534,11 @@ function renderDensityPlot(hrData) {
                 const sleepPercent = sleepHR.length > 0 ? (sleepCount / sleepHR.length * 100).toFixed(1) : 0;
                 const awakePercent = awakeHR.length > 0 ? (awakeCount / awakeHR.length * 100).toFixed(1) : 0;
                 
-                tooltip.transition()
+                tooltip_density.transition()
                     .duration(100)
                     .style("opacity", .9);
                 
-                tooltip.html(`
+                tooltip_density.html(`
                     <strong>💤 Sleep Curve</strong><br/>
                     <strong>Heart Rate: ${Math.round(sleepPoint[0])} BPM</strong><br/>
                     <span style="color: #4A90E2;">Sleep Density: ${sleepPoint[1].toFixed(4)}</span><br/>
@@ -510,12 +547,19 @@ function renderDensityPlot(hrData) {
                     <span style="color: #4A90E2;">Sleep: ${sleepPercent}% of readings</span><br/>
                     <span style="color: #E74C3C;">Awake: ${awakePercent}% of readings</span>
                 `)
-                    .style("left", (event.pageX + 10) + "px")
-                    .style("top", (event.pageY - 10) + "px");
+                .style("left", (event) => {
+                    const tooltip = document.getElementById("tooltip_density");
+                    const left = Math.max(10, event.pageX - tooltip.offsetWidth / 2);
+                    return `${Math.min(window.innerWidth - tooltip.offsetWidth - 10, left)}px`;
+                })
+                .style("top", (event) => {
+                    const tooltip = document.getElementById("tooltip_density");
+                    return `${Math.min(window.innerHeight - tooltip.offsetHeight - 10, event.pageY - 10)}px`;
+                });
             })
             .on("mouseout", function() {
                 d3.select(this).attr("stroke-width", 3);
-                tooltip.transition()
+                tooltip_density.transition()
                     .duration(300)
                     .style("opacity", 0);
             });
@@ -563,11 +607,11 @@ function renderDensityPlot(hrData) {
                 const sleepPercent = sleepHR.length > 0 ? (sleepCount / sleepHR.length * 100).toFixed(1) : 0;
                 const awakePercent = awakeHR.length > 0 ? (awakeCount / awakeHR.length * 100).toFixed(1) : 0;
                 
-                tooltip.transition()
+                tooltip_density.transition()
                     .duration(100)
                     .style("opacity", .9);
                 
-                tooltip.html(`
+                tooltip_density.html(`
                     <strong>☀️ Awake Curve</strong><br/>
                     <strong>Heart Rate: ${Math.round(awakePoint[0])} BPM</strong><br/>
                     <span style="color: #4A90E2;">Sleep Density: ${sleepDensityVal.toFixed(4)}</span><br/>
@@ -576,12 +620,18 @@ function renderDensityPlot(hrData) {
                     <span style="color: #4A90E2;">Sleep: ${sleepPercent}% of readings</span><br/>
                     <span style="color: #E74C3C;">Awake: ${awakePercent}% of readings</span>
                 `)
-                    .style("left", (event.pageX + 10) + "px")
-                    .style("top", (event.pageY - 10) + "px");
+                .style("left", (event) => {
+                    const tooltip = document.getElementById("tooltip_density");
+                    const left = Math.max(10, event.pageX - tooltip.offsetWidth / 2);
+                    return `${Math.min(window.innerWidth - tooltip.offsetWidth - 10, left)}px`;
+                })
+                .style("top", (event) => {
+                    const tooltip = document.getElementById("tooltip_density");
+                    return `${Math.min(window.innerHeight - tooltip.offsetHeight - 10, event.pageY - 10)}px`;});
             })
             .on("mouseout", function() {
                 d3.select(this).attr("stroke-width", 3);
-                tooltip.transition()
+                tooltip_density.transition()
                     .duration(300)
                     .style("opacity", 0);
             });
@@ -741,9 +791,6 @@ document.addEventListener('DOMContentLoaded', function() {
         createDualLineGraph();
     }, 1000);
 });
-
-// Alternative: Call this function manually to generate your graph
-// createDualLineGraph();
 
 // Load participant data
 function loadParticipantData(userNum) {
@@ -2580,21 +2627,6 @@ Promise.all([
 
         }
         
-
-        
-        // function updateAllCharts() {
-        //     // Recreate charts with filtered data
-        //     createWASOChart();
-        //     createLatencyChart();
-        //     createAwakeningsChart();
-            
-        //     // Update efficiency chart dots
-        //     const svg = d3.select("#efficiency-chart");
-        //     const g = svg.select("g");
-        //     const xScale = d3.scaleLinear().domain([4, 12]).range([0, chartWidth]);
-        //     const yScale = d3.scaleLinear().domain([50, 100]).range([chartHeight, 0]);
-        //     updateEfficiencyChart(g, xScale, yScale);
-        // }
         function updateAllCharts() {
             // Recreate charts with filtered data
             createWASOChart();
@@ -2649,404 +2681,6 @@ Promise.all([
         
         // Initialize
         initCharts();
-
-/*         d3.csv("data/all_users.csv").then(data => {
-        sleepData = data.map(d => ({
-        id: d.participant,
-        age: +d.Age,
-        stress: +d.Daily_stress,
-        sleepDuration: +d["Total Sleep Time (TST)"] / 60, // convert mins → hrs
-        efficiency: +d.Efficiency,
-        waso: +d["Wake After Sleep Onset (WASO)"],
-        latency: +d.Latency,
-        awakenings: +d["Number of Awakenings"],
-        activityLevel: +d.activityMinutes || 0
-     }));
-
-        filteredData = [...sleepData];
-        initCharts();
-        });
-
-        // let filteredData = [...sleepData];
-        
-        // Chart dimensions
-        const margin = {top: 20, right: 30, bottom: 40, left: 50};
-        const chartWidth = 400 - margin.left - margin.right;
-        const chartHeight = 300 - margin.top - margin.bottom;
-        
-        // Color scales
-        const stressColorScale = d3.scaleSequential(d3.interpolateReds).domain([1, 50]);
-        const ageColorScale = d3.scaleSequential(d3.interpolateBlues).domain([20, 80]);
-        
-        // Tooltip
-        const tooltip = d3.select("#tooltip");
-        
-        // Initialize charts
-        function initCharts() {
-            createEfficiencyChart();
-            createWASOChart();
-            createLatencyChart();
-            createAwakeningsChart();
-            updateMetrics();
-        }
-        
-        function createEfficiencyChart() {
-            const svg = d3.select("#efficiency-chart");
-            svg.selectAll("*").remove();
-            
-            const g = svg.append("g")
-                .attr("transform", `translate(${margin.left},${margin.top})`);
-            
-            const xScale = d3.scaleLinear()
-                .domain([4, 12])
-                .range([0, chartWidth]);
-            
-            const yScale = d3.scaleLinear()
-                .domain([50, 100])
-                .range([chartHeight, 0]);
-            
-            // Axes
-            g.append("g")
-                .attr("class", "axis")
-                .attr("transform", `translate(0,${chartHeight})`)
-                .call(d3.axisBottom(xScale));
-            
-            g.append("g")
-                .attr("class", "axis")
-                .call(d3.axisLeft(yScale));
-            
-            // Axis labels
-            g.append("text")
-                .attr("class", "axis-label")
-                .attr("transform", `translate(${chartWidth/2}, ${chartHeight + 35})`)
-                .style("text-anchor", "middle")
-                .style("fill", "black")
-                .text("Sleep Duration (hours)");
-            
-            g.append("text")
-                .attr("class", "axis-label")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 0 - margin.left)
-                .attr("x", 0 - (chartHeight / 2))
-                .attr("dy", "1em")
-                .style("text-anchor", "middle")
-                .style("fill", "black")
-                .text("Sleep Efficiency (%)");
-            
-            updateEfficiencyChart(g, xScale, yScale);
-        }
-        
-        function updateEfficiencyChart(g, xScale, yScale) {
-            const dots = g.selectAll(".dot")
-                .data(filteredData, d => d.id);
-            
-            dots.enter()
-                .append("circle")
-                .attr("class", "dot")
-                .attr("r", 4)
-                .merge(dots)
-                .transition()
-                .duration(300)
-                .attr("cx", d => xScale(d.sleepDuration))
-                .attr("cy", d => yScale(d.efficiency))
-                .attr("fill", d => stressColorScale(d.stress));
-            
-            dots.exit().remove();
-            
-            g.selectAll(".dot")
-                .on("mouseover", (event, d) => {
-                    tooltip.style("opacity", 1)
-                        .html(`Duration: ${d.sleepDuration}h<br/>Efficiency: ${d.efficiency}%<br/>Stress: ${d.stress}<br/>Age: ${d.age}`)
-                        .style("left", (event.pageX + 10) + "px")
-                        .style("top", (event.pageY - 10) + "px");
-                })
-                .on("mouseout", () => {
-                    tooltip.style("opacity", 0);
-                });
-        }
-        
-        function createWASOChart() {
-            const svg = d3.select("#waso-chart");
-            svg.selectAll("*").remove();
-            
-            const g = svg.append("g")
-                .attr("transform", `translate(${margin.left},${margin.top})`);
-            
-            // Group data by stress ranges
-            const stressBins = d3.range(0, 51, 5);
-            const binData = stressBins.map(bin => {
-                const inBin = filteredData.filter(d => d.stress >= bin && d.stress < bin + 5);
-                return {
-                    stress: bin + 2.5,
-                    avgWASO: d3.mean(inBin, d => d.waso) || 0,
-                    count: inBin.length
-                };
-            }).filter(d => d.count > 0);
-            
-            const xScale = d3.scaleBand()
-                .domain(binData.map(d => d.stress))
-                .range([0, chartWidth])
-                .padding(0.1);
-            
-            const yScale = d3.scaleLinear()
-                .domain([0, d3.max(binData, d => d.avgWASO) || 50])
-                .range([chartHeight, 0]);
-            
-            // Axes
-            g.append("g")
-                .attr("class", "axis")
-                .attr("transform", `translate(0,${chartHeight})`)
-                .call(d3.axisBottom(xScale).tickFormat(d => Math.round(d)));
-            
-            g.append("g")
-                .attr("class", "axis")
-                .call(d3.axisLeft(yScale));
-            
-            // Axis labels
-            g.append("text")
-                .attr("class", "axis-label")
-                .attr("transform", `translate(${chartWidth/2}, ${chartHeight + 35})`)
-                .style("text-anchor", "middle")
-                .style("fill", "black")
-                .text("Stress Level");
-            
-            g.append("text")
-                .attr("class", "axis-label")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 0 - margin.left)
-                .attr("x", 0 - (chartHeight / 2))
-                .attr("dy", "1em")
-                .style("text-anchor", "middle")
-                .style("fill", "black")
-                .text("Average WASO (min)");
-            
-            // Bars
-            g.selectAll(".bar")
-                .data(binData)
-                .enter()
-                .append("rect")
-                .attr("class", "bar")
-                .attr("x", d => xScale(d.stress))
-                .attr("width", xScale.bandwidth())
-                .attr("y", d => yScale(d.avgWASO))
-                .attr("height", d => chartHeight - yScale(d.avgWASO))
-                .attr("fill", "#ff6b6b")
-                .on("mouseover", (event, d) => {
-                    tooltip.style("opacity", 1)
-                        .html(`Stress: ${Math.round(d.stress)}<br/>Avg WASO: ${d.avgWASO.toFixed(1)} min<br/>Count: ${d.count}`)
-                        .style("left", (event.pageX + 10) + "px")
-                        .style("top", (event.pageY - 10) + "px");
-                })
-                .on("mouseout", () => {
-                    tooltip.style("opacity", 0);
-                });
-        }
-        
-        function createLatencyChart() {
-            const svg = d3.select("#latency-chart");
-            svg.selectAll("*").remove();
-            
-            const g = svg.append("g")
-                .attr("transform", `translate(${margin.left},${margin.top})`);
-            
-            const bins = d3.histogram()
-                .value(d => d.latency)
-                .domain([0, 30])
-                .thresholds(15)(filteredData);
-            
-            const xScale = d3.scaleLinear()
-                .domain([0, 30])
-                .range([0, chartWidth]);
-            
-            const yScale = d3.scaleLinear()
-                .domain([0, d3.max(bins, d => d.length)])
-                .range([chartHeight, 0]);
-            
-            // Axes
-            g.append("g")
-                .attr("class", "axis")
-                .attr("transform", `translate(0,${chartHeight})`)
-                .call(d3.axisBottom(xScale));
-            
-            g.append("g")
-                .attr("class", "axis")
-                .call(d3.axisLeft(yScale));
-            
-            // Axis labels
-            g.append("text")
-                .attr("class", "axis-label")
-                .attr("transform", `translate(${chartWidth/2}, ${chartHeight + 35})`)
-                .style("text-anchor", "middle")
-                .style("fill", "black")
-                .text("Sleep Latency (min)");
-            
-            g.append("text")
-                .attr("class", "axis-label")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 0 - margin.left)
-                .attr("x", 0 - (chartHeight / 2))
-                .attr("dy", "1em")
-                .style("text-anchor", "middle")
-                .style("fill", "black")
-                .text("Frequency");
-            
-            // Bars
-            g.selectAll(".bar")
-                .data(bins)
-                .enter()
-                .append("rect")
-                .attr("class", "bar")
-                .attr("x", d => xScale(d.x0))
-                .attr("width", d => xScale(d.x1) - xScale(d.x0) - 1)
-                .attr("y", d => yScale(d.length))
-                .attr("height", d => chartHeight - yScale(d.length))
-                .attr("fill", "#4ecdc4");
-        }
-        
-        function createAwakeningsChart() {
-            const svg = d3.select("#awakenings-chart");
-            svg.selectAll("*").remove();
-            
-            const g = svg.append("g")
-                .attr("transform", `translate(${margin.left},${margin.top})`);
-            
-            const xScale = d3.scaleLinear()
-                .domain([20, 80])
-                .range([0, chartWidth]);
-            
-            const yScale = d3.scaleLinear()
-                .domain([0, d3.max(filteredData, d => d.awakenings) + 1])
-                .range([chartHeight, 0]);
-            
-            // Axes
-            g.append("g")
-                .attr("class", "axis")
-                .attr("transform", `translate(0,${chartHeight})`)
-                .call(d3.axisBottom(xScale));
-            
-            g.append("g")
-                .attr("class", "axis")
-                .call(d3.axisLeft(yScale));
-            
-            // Axis labels
-            g.append("text")
-                .attr("class", "axis-label")
-                .attr("transform", `translate(${chartWidth/2}, ${chartHeight + 35})`)
-                .style("text-anchor", "middle")
-                .style("fill", "black")
-                .text("Age");
-            
-            g.append("text")
-                .attr("class", "axis-label")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 0 - margin.left)
-                .attr("x", 0 - (chartHeight / 2))
-                .attr("dy", "1em")
-                .style("text-anchor", "middle")
-                .style("fill", "black")
-                .text("Number of Awakenings");
-            
-            // Dots
-            g.selectAll(".dot")
-                .data(filteredData)
-                .enter()
-                .append("circle")
-                .attr("class", "dot")
-                .attr("cx", d => xScale(d.age))
-                .attr("cy", d => yScale(d.awakenings))
-                .attr("r", 3)
-                .attr("fill", d => ageColorScale(d.age))
-                .on("mouseover", (event, d) => {
-                    tooltip.style("opacity", 1)
-                        .html(`Age: ${d.age}<br/>Awakenings: ${d.awakenings}<br/>Sleep Duration: ${d.sleepDuration}h`)
-                        .style("left", (event.pageX + 10) + "px")
-                        .style("top", (event.pageY - 10) + "px");
-                })
-                .on("mouseout", () => {
-                    tooltip.style("opacity", 0);
-                });
-        }
-        
-        function updateMetrics() {
-            const avgEfficiency = d3.mean(filteredData, d => d.efficiency);
-            const avgWASO = d3.mean(filteredData, d => d.waso);
-            const avgLatency = d3.mean(filteredData, d => d.latency);
-            
-            d3.select("#avg-efficiency").text(avgEfficiency ? avgEfficiency.toFixed(1) + "%" : "--");
-            d3.select("#avg-waso").text(avgWASO ? avgWASO.toFixed(1) : "--");
-            d3.select("#avg-latency").text(avgLatency ? avgLatency.toFixed(1) : "--");
-        }
-        
-        function filterData() {
-            const durationValue = +d3.select("#duration-slider").property("value");
-            const stressValue = +d3.select("#stress-slider").property("value");
-            const ageValue = +d3.select("#age-slider").property("value");
-            const activityValue = +d3.select("#activity-slider").property("value");
-
-            // Initial filtering with moderate thresholds
-            filteredData = sleepData.filter(d => {
-            return Math.abs(d.age - ageValue) <= 15 &&
-               Math.abs(d.activityLevel - activityValue) <= 500;
-             });
-
-            // If too few points, expand criteria
-            if (filteredData.length < 20) {
-                 filteredData = sleepData.filter(d => {
-            return Math.abs(d.sleepDuration - durationValue) <= 2 &&
-                   Math.abs(d.stress - stressValue) <= 20 &&
-                   Math.abs(d.age - ageValue) <= 15 &&
-                   Math.abs(d.activityLevel - activityValue) <= 1000; // based on your CSV
-             });
-            }
-        
-            
-            // Update metrics
-            updateMetrics();
-            
-            // Update all charts with filtered data
-            updateAllCharts();
-
-        }
-        
-
-        
-        function updateAllCharts() {
-            // Recreate charts with filtered data
-            createWASOChart();
-            createLatencyChart();
-            createAwakeningsChart();
-            
-            // Update efficiency chart dots
-            const svg = d3.select("#efficiency-chart");
-            const g = svg.select("g");
-            const xScale = d3.scaleLinear().domain([4, 12]).range([0, chartWidth]);
-            const yScale = d3.scaleLinear().domain([50, 100]).range([chartHeight, 0]);
-            updateEfficiencyChart(g, xScale, yScale);
-        }
-        
-        // Event listeners
-        d3.select("#duration-slider").on("input", function() {
-            d3.select("#duration-value").text(this.value + "h");
-            filterData();
-        });
-        
-        d3.select("#stress-slider").on("input", function() {
-            d3.select("#stress-value").text(this.value);
-            filterData();
-        });
-        
-        d3.select("#age-slider").on("input", function() {
-            d3.select("#age-value").text(this.value);
-            filterData();
-        });
-        
-        d3.select("#activity-slider").on("input", function() {
-            d3.select("#activity-value").text(this.value);
-            filterData();
-        });
-        
-        // Initialize
-        initCharts(); */
 
 const infoSections = [
     {
