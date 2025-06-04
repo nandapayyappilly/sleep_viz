@@ -2317,7 +2317,6 @@ Promise.all([
             createWASOChart();
             createLatencyChart();
             createAwakeningsChart();
-            createCaffeineChart();
             createMovementChart();
             createScreenChart();
             updateMetrics();
@@ -2592,67 +2591,6 @@ Promise.all([
                 });
         }
 
-        function createCaffeineChart() {
-            const svg = d3.select("#caffeine-chart");
-            svg.selectAll("*").remove();
-            
-            const g = svg.append("g")
-                .attr("transform", `translate(${margin.left},${margin.top})`);
-            
-            const xScale = d3.scaleLinear()
-                .domain([0, d3.max(filteredData, d => d.caffeineEvents) || 10])
-                .range([0, chartWidth]);
-            
-            const yScale = d3.scaleLinear()
-                .domain([d3.min(filteredData, d => d.efficiency) - 5, d3.max(filteredData, d => d.efficiency) + 5])
-                .range([chartHeight, 0]);
-            
-            // Axes
-            g.append("g")
-                .attr("class", "axis")
-                .attr("transform", `translate(0,${chartHeight})`)
-                .call(d3.axisBottom(xScale));
-            
-            g.append("g")
-                .attr("class", "axis")
-                .call(d3.axisLeft(yScale));
-            
-            // Axis labels
-            g.append("text")
-                .attr("class", "axis-label")
-                .attr("transform", `translate(${chartWidth/2}, ${chartHeight + 35})`)
-                .style("text-anchor", "middle")
-                .text("Caffeine Events per Day");
-            
-            g.append("text")
-                .attr("class", "axis-label")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 0 - margin.left)
-                .attr("x", 0 - (chartHeight / 2))
-                .attr("dy", "1em")
-                .style("text-anchor", "middle")
-                .text("Sleep Efficiency (%)");
-            
-            // Dots
-            g.selectAll(".dot")
-                .data(filteredData)
-                .enter()
-                .append("circle")
-                .attr("class", "dot")
-                .attr("cx", d => xScale(d.caffeineEvents))
-                .attr("cy", d => yScale(d.efficiency))
-                .attr("r", 4)
-                .attr("fill", "#e74c3c")
-                .on("mouseover", (event, d) => {
-                    tooltip.style("opacity", 1)
-                        .html(`Caffeine: ${d.caffeineEvents} events<br/>Efficiency: ${d.efficiency}%<br/>ID: ${d.id}`)
-                        .style("left", (event.pageX + 10) + "px")
-                        .style("top", (event.pageY - 10) + "px");
-                })
-                .on("mouseout", () => {
-                    tooltip.style("opacity", 0);
-                });
-        }
         
         function createMovementChart() {
             const svg = d3.select("#movement-chart");
