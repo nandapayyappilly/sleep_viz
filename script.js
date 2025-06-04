@@ -2526,8 +2526,18 @@ Promise.all([
                 .attr("width", d => xScale(d.x1) - xScale(d.x0) - 1)
                 .attr("y", d => yScale(d.length))
                 .attr("height", d => chartHeight - yScale(d.length))
-                .attr("fill", "#4ecdc4");
+                .attr("fill", "#4ecdc4")
+                .on("mouseover", (event, d) => {
+                    tooltip.style("opacity", 1)
+                        .html(`Latency: ${d.x0.toFixed(1)}-${d.x1.toFixed(1)} min<br/>Frequency: ${d.length}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 10) + "px");
+                })
+                .on("mouseout", () => {
+                    tooltip.style("opacity", 0);
+                });
         }
+
         
         function createAwakeningsChart() {
             const svg = d3.select("#awakenings-chart");
