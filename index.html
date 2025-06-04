@@ -14,30 +14,32 @@
     <header class="hero-section">
         <div class="hero-content">
             <h1 class="hero-title">What's Your Sleep Story?</h1>
-            <p class="hero-subtitle">Discover the hidden patterns in your sleep through interactive data visualization</p>
+            <p class="hero-subtitle">Journey through the mysteries of sleep with Luna, your celestial guide to understanding rest and recovery</p>
             <div class="hero-divider"></div>
         </div>
-        <div class="floating-elements">
-            <div class="floating-circle circle-1"></div>
-            <div class="floating-circle circle-2"></div>
-            <div class="floating-circle circle-3"></div>
-            
-            <!-- Cute Moon Character -->
-            <div class="moon-character" onclick="toggleSleepyMoon()">
-                <div class="moon-body">
-                    <div class="moon-face">
-                        <div class="moon-eyes">
-                            <div class="moon-eye" id="left-eye"></div>
-                            <div class="moon-eye" id="right-eye"></div>
+         <!-- Enhanced Luna Character -->
+         <div class="luna-container">
+            <div class="luna-character" onclick="interactWithLuna()">
+                <div class="luna-body">
+                    <div class="luna-face">
+                        <div class="luna-eyes">
+                            <div class="luna-eye" id="left-eye"></div>
+                            <div class="luna-eye" id="right-eye"></div>
                         </div>
-                        <div class="moon-mouth"></div>
-                        <div class="moon-cheek left"></div>
-                        <div class="moon-cheek right"></div>
+                        <div class="luna-mouth" id="luna-mouth"></div>
+                        <div class="luna-cheek left"></div>
+                        <div class="luna-cheek right"></div>
                     </div>
                 </div>
-                <div class="sleep-sparkle sparkle-1">✨</div>
-                <div class="sleep-sparkle sparkle-2">💫</div>
-                <div class="sleep-sparkle sparkle-3">⭐</div>
+                <div class="luna-sparkles">
+                    <div class="sparkle sparkle-1">✨</div>
+                    <div class="sparkle sparkle-2">⭐</div>
+                    <div class="sparkle sparkle-3">💫</div>
+                    <div class="sparkle sparkle-4">🌟</div>
+                </div>
+                <div class="luna-speech" id="luna-speech">
+                    Welcome to your sleep journey! Click me to learn more! 🌙
+                </div>
             </div>
         </div>
     </header>
@@ -45,6 +47,7 @@
     <div class="main-container">
         <!-- Heart Rate Analysis Section -->
         <section class="analysis-section">
+            <div class="luna-mini"></div>
             <div class="section-header">
                 <h2 class="section-title">Heart Rate Analysis</h2>
                 <p class="section-description">Understanding your body's rhythm between sleep and wakefulness</p>
@@ -52,7 +55,7 @@
             
             <div class="dual-content-layout">
                 <div class="chart-container" id="dualLineContainer">
-                    <div id="loadingMessage">⏳ The graph is loading... This may take a few seconds.</div>
+                    <div id="loadingMessage">⏳ Luna is analyzing your heart's rhythm...</div>
                     <div id="dualLineTitle"></div>
                     <div id="dual-line-chart"></div>
                     <div id="tooltip_density" class="tooltip"></div>
@@ -99,6 +102,7 @@
 
         <!-- Hormone Analysis Section -->
         <section class="analysis-section hormone-section">
+            <div class="luna-mini"></div>
             <div class="section-header">
                 <h2 class="section-title">Hormone Balance</h2>
                 <p class="section-description">How cortisol and melatonin orchestrate your sleep-wake cycle</p>
@@ -160,8 +164,8 @@
     </div>
         <div class="container">
             <div class="header">
-                <h1>Sleep Biometric Predictor</h1>
-                <p>Predict your stress hormones and sleep quality using real science</p>
+                <h1>Meet Your Sleep Twin 🌙</h1>
+                <p>Let Luna help you discover the sleeper most like you — and explore what their patterns reveal about yours.</p>
             </div>
     
             <div class="interactive-info" id="interactiveInfo">
@@ -306,12 +310,23 @@
                 <div id="matchResults" style="display: none;"></div>
             </div>
         </div>
+        <div class="narrative-transition" id="transition2" style="display: none;">
+            <div class="transition-icon">⚡</div>
+            <h2 class="transition-title">Now Let's Optimize Your Sleep</h2>
+            <p class="transition-text">
+                Great! You've found your sleep twin and learned about your patterns. 
+                Now let's explore how small changes in lifestyle factors could improve your sleep quality.
+            </p>
+            <button class="transition-button" onclick="showDashboard()">
+                Optimize Your Sleep
+            </button>
+        </div>
 
         <!-- Interactive Section Toggle -->
         <section class="interactive-section">
             <div class="section-header">
                 <h1 class="section-title">Individual Sleep Stories</h1>
-                <p class="section-description">Dive deeper into personal sleep patterns and discover unique insights</p>
+                <p class="section-description">Matched to your sleep twin — look at how their nights compares to yours.</p>
             </div>
             
             <div class="button-wrapper">
@@ -435,7 +450,7 @@
         </div>
         
         <div class="charts-grid">
-            <div class="chart-container">
+            <div class="chart-container" id="dashboard">
                 <div class="chart-title">Sleep Efficiency vs Duration</div>
                 <svg id="efficiency-chart" width="400" height="300"></svg>
             </div>

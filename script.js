@@ -1,27 +1,196 @@
 let currentUser = 1;
 
-function toggleSleepyMoon() {
-    const leftEye = document.getElementById('left-eye');
-    const rightEye = document.getElementById('right-eye');
-    
-    // Toggle sleepy state
-    leftEye.classList.toggle('sleepy');
-    rightEye.classList.toggle('sleepy');
-    
-    // Add a little bounce effect
-    const moonChar = document.querySelector('.moon-character');
-    moonChar.style.animation = 'none';
-    setTimeout(() => {
-        moonChar.style.animation = 'gentle-float 4s ease-in-out infinite';
-    }, 100);
+// Luna Character Interactions
+const lunaMessages = [
+  "Hello! I'm Luna, your sleep guide! 🌙",
+  "Did you know your heart rate drops during sleep? ❤️",
+  "Sleep is when your body repairs itself! ✨",
+  "Melatonin helps you feel sleepy! 💤",
+  "Good sleep makes everything better! 🌟",
+  "Sweet dreams are made of good sleep hygiene! 💫",
+  "I love watching over sleepy data! 🌙✨"
+];
+
+let lunaMessageIndex = 0;
+let isFirstInteraction = true;
+
+// Show default prompt when page loads
+function showDefaultPrompt() {
+  const lunaSpeech = document.getElementById('luna-speech');
+  const lunaMouth = document.getElementById('luna-mouth');
+  
+  if (lunaSpeech) {
+    lunaSpeech.textContent = "Click on me to learn more! 👆✨";
+    lunaSpeech.classList.add('show');
+    lunaMouth.classList.add('happy');
+  }
 }
 
-// Auto-toggle sleepy state occasionally
-setInterval(() => {
-    if (Math.random() < 0.3) { // 30% chance every 5 seconds
-        toggleSleepyMoon();
+function interactWithLuna() {
+  const lunaCharacter = document.querySelector('.luna-character');
+  const lunaSpeech = document.getElementById('luna-speech');
+  const lunaEyes = document.querySelectorAll('.luna-eye');
+  const lunaMouth = document.getElementById('luna-mouth');
+
+  // Make Luna happy
+  lunaEyes.forEach(eye => {
+    eye.classList.remove('sleepy');
+  });
+  lunaMouth.classList.add('happy');
+
+  // If it's the first interaction, start with the first message
+  if (isFirstInteraction) {
+    isFirstInteraction = false;
+    lunaMessageIndex = 0;
+  }
+
+  // Show speech bubble with cycling messages
+  lunaSpeech.textContent = lunaMessages[lunaMessageIndex];
+  lunaSpeech.classList.add('show');
+
+  // Cycle through messages
+  lunaMessageIndex = (lunaMessageIndex + 1) % lunaMessages.length;
+
+  // Hide speech bubble after 3 seconds
+  setTimeout(() => {
+    lunaSpeech.classList.remove('show');
+    lunaMouth.classList.remove('happy');
+  }, 3000);
+
+  // Add some sparkle effect
+  createLunaSparkles();
+}
+
+function createLunaSparkles() {
+    const lunaContainer = document.querySelector('.luna-container');
+    const sparkleCount = 8;
+    
+    for (let i = 0; i < sparkleCount; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.innerHTML = ['✨', '⭐', '💫', '🌟'][Math.floor(Math.random() * 4)];
+        sparkle.style.position = 'absolute';
+        sparkle.style.fontSize = '16px';
+        sparkle.style.pointerEvents = 'none';
+        sparkle.style.zIndex = '5';
+        
+        // Random position around Luna
+        const angle = (i / sparkleCount) * 2 * Math.PI;
+        const radius = 80 + Math.random() * 40;
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+        
+        sparkle.style.left = `${70 + x}px`;
+        sparkle.style.top = `${70 + y}px`;
+        sparkle.style.opacity = '0';
+        sparkle.style.transition = 'all 1s ease-out';
+        
+        lunaContainer.appendChild(sparkle);
+        
+        // Animate sparkle
+        setTimeout(() => {
+            sparkle.style.opacity = '1';
+            sparkle.style.transform = `scale(1.5) rotate(${Math.random() * 360}deg)`;
+        }, i * 100);
+        
+        // Remove sparkle
+        setTimeout(() => {
+            sparkle.style.opacity = '0';
+            sparkle.style.transform = `scale(0) rotate(${Math.random() * 360}deg)`;
+            setTimeout(() => {
+                if (sparkle.parentNode) {
+                    sparkle.parentNode.removeChild(sparkle);
+                }
+            }, 1000);
+        }, 1000 + i * 100);
     }
-}, 5000);
+}
+
+// Initialize default prompt when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Small delay to ensure elements are rendered
+    setTimeout(showDefaultPrompt, 500);
+  });
+
+
+// Mini Luna interactions
+document.addEventListener('DOMContentLoaded', function() {
+    // Add click handlers to mini Luna moons
+    setTimeout(() => {
+        const miniLunas = document.querySelectorAll('.luna-mini');
+        miniLunas.forEach(mini => {
+            mini.addEventListener('click', function() {
+                createMiniSparkle(this);
+                showMiniMessage();
+            });
+        });
+    }, 1000);
+});
+
+function createMiniSparkle(element) {
+    const sparkle = document.createElement('div');
+    sparkle.innerHTML = '✨';
+    sparkle.style.position = 'absolute';
+    sparkle.style.fontSize = '20px';
+    sparkle.style.pointerEvents = 'none';
+    sparkle.style.zIndex = '15';
+    sparkle.style.left = '50%';
+    sparkle.style.top = '50%';
+    sparkle.style.transform = 'translate(-50%, -50%)';
+    sparkle.style.opacity = '0';
+    sparkle.style.transition = 'all 0.8s ease-out';
+    
+    element.appendChild(sparkle);
+    
+    setTimeout(() => {
+        sparkle.style.opacity = '1';
+        sparkle.style.transform = 'translate(-50%, -50%) scale(2) rotate(360deg)';
+    }, 10);
+    
+    setTimeout(() => {
+        if (sparkle.parentNode) {
+            sparkle.parentNode.removeChild(sparkle);
+        }
+    }, 800);
+}
+
+function showMiniMessage() {
+    const messages = ["Keep exploring! 🌙", "Luna approves! ✨", "Sweet data! 💫"];
+    const message = messages[Math.floor(Math.random() * messages.length)];
+    
+    // Create temporary message
+    const msgElement = document.createElement('div');
+    msgElement.textContent = message;
+    msgElement.style.position = 'fixed';
+    msgElement.style.top = '20px';
+    msgElement.style.right = '20px';
+    msgElement.style.background = 'linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(51, 65, 85, 0.95))';
+    msgElement.style.color = '#f1f5f9';
+    msgElement.style.padding = '10px 15px';
+    msgElement.style.borderRadius = '10px';
+    msgElement.style.fontSize = '14px';
+    msgElement.style.zIndex = '10001';
+    msgElement.style.border = '1px solid rgba(251, 191, 36, 0.3)';
+    msgElement.style.backdropFilter = 'blur(10px)';
+    msgElement.style.opacity = '0';
+    msgElement.style.transition = 'all 0.3s ease';
+    
+    document.body.appendChild(msgElement);
+    
+    setTimeout(() => {
+        msgElement.style.opacity = '1';
+        msgElement.style.transform = 'translateY(0)';
+    }, 10);
+    
+    setTimeout(() => {
+        msgElement.style.opacity = '0';
+        msgElement.style.transform = 'translateY(-20px)';
+        setTimeout(() => {
+            if (msgElement.parentNode) {
+                msgElement.parentNode.removeChild(msgElement);
+            }
+        }, 300);
+    }, 2000);
+}
 
 document.getElementById("toggleUserView").addEventListener("click", function() {
     const userSection = document.getElementById("userSpecificSection");
@@ -109,6 +278,7 @@ function renderCortisolMelatoninChart(avgCortisolBeforeSleep, avgCortisolWakeUp,
         .attr("y", 20)
         .attr("font-size", "24px")
         .attr("font-weight", "bold")
+        .attr("fill", "white")
         .text("Cortisol & Melatonin Levels: Before Sleep vs Wake Up");
 
     // Define log scales for cortisol & melatonin
@@ -277,6 +447,7 @@ function renderCortisolMelatoninChart(avgCortisolBeforeSleep, avgCortisolWakeUp,
         .attr("y", 20)
         .attr("x", -height / 2)
         .style("text-anchor", "middle")
+        .attr("fill", "white")
         .text("Cortisol (ng/mL)");
 
     svg.append("text")
@@ -285,6 +456,7 @@ function renderCortisolMelatoninChart(avgCortisolBeforeSleep, avgCortisolWakeUp,
         .attr("y", -width + 20)
         .attr("x", height / 2)
         .style("text-anchor", "middle")
+        .attr("fill", "white")
         .text("Melatonin (pg/mL)");
 
     // Add legend
@@ -482,7 +654,7 @@ function renderDensityPlot(hrData) {
         .append("text")
         .attr("x", width / 2)
         .attr("y", 40)
-        .attr("fill", "black")
+        .attr("fill", "white")
         .style("text-anchor", "middle")
         .style("font-weight", "bold")
         .style("font-size", 12)
@@ -494,7 +666,7 @@ function renderDensityPlot(hrData) {
         .attr("transform", "rotate(-90)")
         .attr("y", -60)
         .attr("x", -height / 2)
-        .attr("fill", "black")
+        .attr("fill", "white")
         .style("text-anchor", "middle")
         .style("font-weight", "bold")
         .style("font-size", 12)
@@ -519,7 +691,7 @@ function renderDensityPlot(hrData) {
         // Add filled area for sleep
         g.append("path")
             .datum(sleepDensity)
-            .attr("fill", "#4A90E2")
+            .attr("fill", "#fbbf24")
             .attr("fill-opacity", 0.3)
             .attr("d", area);
         
@@ -527,7 +699,7 @@ function renderDensityPlot(hrData) {
         g.append("path")
             .datum(sleepDensity)
             .attr("fill", "none")
-            .attr("stroke", "#4A90E2")
+            .attr("stroke", "#fbbf24")
             .attr("stroke-width", 3)
             .attr("d", line)
             .style("cursor", "crosshair")
@@ -699,6 +871,7 @@ function renderDensityPlot(hrData) {
         .attr("x", 20)
         .attr("y", 12)
         .text("💤 Sleep Heart Rate")
+        .style("fill", "white")
         .style("font-size", "14px");
     
     // Awake legend
@@ -715,6 +888,7 @@ function renderDensityPlot(hrData) {
         .attr("x", 20)
         .attr("y", 37)
         .text("☀️ Awake Heart Rate")
+        .style("fill", "white")
         .style("font-size", "14px");
     
     // Overlap legend (if exists)
@@ -732,6 +906,7 @@ function renderDensityPlot(hrData) {
             .attr("x", 20)
             .attr("y", 62)
             .text("Overlap")
+            .style("fill", "white")
             .style("font-size", "14px");
     }
     
@@ -3333,6 +3508,260 @@ function generateInsights(user, participant) {
 document.addEventListener('DOMContentLoaded', function() {
    new InfoController();
 });
+
+// Enhanced Navigation and Journey Controller
+class SleepJourneyController {
+    constructor() {
+        this.currentStep = 'explore';
+        this.userProfile = {
+            duration: null,
+            stress: null,
+            latency: null,
+            chronotype: null,
+            twin: null
+        };
+        this.init();
+    }
+
+    init() {
+        this.setupNavigationListeners();
+        this.setupProfileCardVisibility();
+        this.initializeStepVisibility();
+        this.updateNavigationState();
+    }
+
+    setupNavigationListeners() {
+        // Navigation step clicks
+        document.querySelectorAll('.progress-step').forEach(step => {
+            step.addEventListener('click', (e) => {
+                const targetStep = step.getAttribute('data-step');
+                this.navigateToStep(targetStep);
+            });
+        });
+
+        // Scroll-based navigation updates
+        this.setupScrollNavigation();
+        
+        // Transition button listeners
+        this.setupTransitionButtons();
+    }
+
+    setupScrollNavigation() {
+        const observerOptions = {
+            threshold: 0.3,
+            rootMargin: '-100px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const sectionId = entry.target.id;
+                    this.updateStepFromSection(sectionId);
+                }
+            });
+        }, observerOptions);
+
+        // Observe key sections
+        const sections = [
+            'dual-line-chart',
+            'cortisolMelatoninChart', 
+            'interactiveInfo',
+            'quizSection',
+            'results'
+        ].map(id => document.getElementById(id)).filter(el => el);
+
+        sections.forEach(section => observer.observe(section));
+    }
+
+    setupTransitionButtons() {
+        // Individual section show button
+        const toggleButton = document.getElementById('toggleUserView');
+        if (toggleButton) {
+            toggleButton.addEventListener('click', () => {
+                this.showIndividualSection();
+            });
+        }
+
+        // Transition buttons
+        document.querySelectorAll('.transition-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const buttonText = button.textContent.toLowerCase();
+                if (buttonText.includes('individual') || buttonText.includes('explore')) {
+                    this.showIndividualSection();
+                } else if (buttonText.includes('optimize')) {
+                    this.navigateToStep('optimize');
+                }
+            });
+        });
+    }
+
+    setupProfileCardVisibility() {
+        const profileCard = document.getElementById('sleepProfileCard');
+        if (profileCard) {
+            // Show profile card after user starts interacting
+            setTimeout(() => {
+                profileCard.classList.add('visible');
+            }, 3000);
+        }
+    }
+
+    navigateToStep(stepName) {
+        this.currentStep = stepName;
+        this.updateNavigationState();
+        this.scrollToStepSection(stepName);
+        this.updateProfileCard();
+    }
+
+    updateStepFromSection(sectionId) {
+        const stepMap = {
+            'dual-line-chart': 'explore',
+            'cortisolMelatoninChart': 'explore',
+            'interactiveInfo': 'identify',
+            'quizSection': 'identify', 
+            'results': 'identify',
+            'sleepSimulator': 'optimize',
+            'efficiency-chart': 'optimize'
+        };
+
+        const newStep = stepMap[sectionId];
+        if (newStep && newStep !== this.currentStep) {
+            this.currentStep = newStep;
+            this.updateNavigationState();
+        }
+    }
+
+    updateNavigationState() {
+        // Update active step in navigation
+        document.querySelectorAll('.progress-step').forEach(step => {
+            const stepName = step.getAttribute('data-step');
+            step.classList.toggle('active', stepName === this.currentStep);
+            
+            // Mark completed steps
+            const stepOrder = ['explore', 'identify', 'optimize'];
+            const currentIndex = stepOrder.indexOf(this.currentStep);
+            const thisIndex = stepOrder.indexOf(stepName);
+            step.classList.toggle('completed', thisIndex < currentIndex);
+        });
+
+        // Update profile card state based on step
+        this.updateProfileCardForStep();
+    }
+
+    scrollToStepSection(stepName) {
+        const sectionMap = {
+            'explore': 'dualLineContainer',
+            'identify': 'interactiveInfo', 
+            'optimize': 'sleepSimulator'
+        };
+
+        const targetId = sectionMap[stepName];
+        const targetElement = document.getElementById(targetId);
+        
+        if (targetElement) {
+            const headerOffset = 100;
+            const elementPosition = targetElement.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
+    }
+
+    showIndividualSection() {
+        const userSection = document.getElementById("userSpecificSection");
+        const button = document.getElementById("toggleUserView");
+        
+        if (userSection && button) {
+            userSection.style.display = "block";
+            userSection.classList.add('active');
+            button.textContent = "🔒 Hide Individual Data ";
+            button.classList.add('expanded');
+            
+            // Update navigation to identify step
+            this.navigateToStep('identify');
+            
+            // Smooth scroll to the section
+            setTimeout(() => {
+                userSection.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            }, 300);
+        }
+    }
+
+    showDashboard() {
+        const dashboard = document.querySelector('.dashboard');
+        if (dashboard) {
+            this.navigateToStep('optimize');
+            dashboard.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+        }
+    }
+
+    updateProfileCard() {
+        const profileCard = document.getElementById('sleepProfileCard');
+        if (!profileCard) return;
+
+        const stepDescriptions = {
+            'explore': 'Exploring sleep patterns...',
+            'identify': 'Finding your sleep twin...',
+            'optimize': 'Optimizing your sleep...'
+        };
+
+        const subtitle = profileCard.querySelector('.profile-subtitle');
+        if (subtitle) {
+            subtitle.textContent = stepDescriptions[this.currentStep] || 'Building as you explore...';
+        }
+    }
+
+    updateProfileCardForStep() {
+        const profileCard = document.getElementById('sleepProfileCard');
+        if (!profileCard) return;
+
+        // Add step-specific styling
+        profileCard.className = `sleep-profile-card visible step-${this.currentStep}`;
+    }
+
+    // Method to update profile data from quiz/interactions
+    updateProfileData(key, value) {
+        this.userProfile[key] = value;
+        this.renderProfileMetrics();
+    }
+
+    renderProfileMetrics() {
+        const metrics = {
+            'profileDuration': this.userProfile.duration ? `${this.userProfile.duration}h` : '--',
+            'profileStress': this.userProfile.stress || '--',
+            'profileLatency': this.userProfile.latency ? `${this.userProfile.latency}min` : '--',
+            'profileChronotype': this.getChronotypeText(this.userProfile.chronotype),
+            'profileTwin': this.userProfile.twin || '--'
+        };
+
+        Object.entries(metrics).forEach(([id, value]) => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = value;
+                element.classList.toggle('metric-empty', value === '--');
+            }
+        });
+    }
+
+    getChronotypeText(chronotype) {
+        const types = {
+            1: 'Evening',
+            2: 'Mod. Evening', 
+            3: 'Neutral',
+            4: 'Mod. Morning',
+            5: 'Morning'
+        };
+        return types[chronotype] || '--';
+    }
+}
 
 
 
