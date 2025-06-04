@@ -590,13 +590,11 @@ h4 { font-size: 1.25rem; }
 
 /* Insights Panel with Sleep Theme */
 .insights-panel {
-    background: linear-gradient(145deg, rgba(30, 41, 59, 0.9) 0%, rgba(37, 99, 235, 0.3) 50%, rgba(30, 41, 59, 0.9) 100%);
+    background: linear-gradient(135deg, var(--secondary-bg) 0%, var(--tertiary-bg) 100%);    
     border-radius: 20px;
     padding: 40px;
-    box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.4),
-        0 0 30px rgba(59, 130, 246, 0.1);
-    border: 1px solid rgba(59, 130, 246, 0.3);
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(247, 183, 49, 0.2);
     backdrop-filter: blur(20px);
     display: flex;
     flex-direction: column;
@@ -614,7 +612,7 @@ h4 { font-size: 1.25rem; }
     font-size: 2rem;
     margin-right: 15px;
     padding: 10px;
-    background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -650,18 +648,18 @@ h4 { font-size: 1.25rem; }
 .stat-item {
     text-align: center;
     flex: 1;
-    background: rgba(59, 130, 246, 0.1);
+    background: linear-gradient(135deg, var(--secondary-bg) 0%, var(--tertiary-bg) 100%); 
     padding: 20px;
     border-radius: 15px;
-    border: 1px solid rgba(59, 130, 246, 0.2);
+    border: 1px solid rgba(247, 183, 49, 0.2);
 }
 
 .stat-number {
     font-size: 2.5rem;
     font-weight: 800;
-    background: linear-gradient(135deg, #a5b4fc, #c7d2fe);
+    background: linear-gradient(135deg, var(--secondary-bg) 0%, var(--tertiary-bg) 100%); 
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #f59e0b; 
     background-clip: text;
     display: block;
 }
@@ -690,12 +688,12 @@ h4 { font-size: 1.25rem; }
 .point-marker {
     width: 8px;
     height: 8px;
-    background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
     border-radius: 50%;
     margin-right: 15px;
     margin-top: 8px;
     flex-shrink: 0;
-    box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+    box-shadow: var(--shadow-md);
 }
 
 /* Hormone Explainer with Night Colors */
@@ -852,17 +850,6 @@ h4 { font-size: 1.25rem; }
     text-align: center;
     position: relative;
 }
-
-/* .interactive-section::before {
-    content: '🌙✨⭐';
-    position: absolute;
-    top: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 1.5rem;
-    letter-spacing: 20px;
-    animation: float 6s ease-in-out infinite;
-} */
 
 .interactive-section .section-title {
     color: #f1f5f9;
@@ -2359,14 +2346,16 @@ h4 { font-size: 1.25rem; }
 }
 
 .biomarker-item {
-    background: rgba(30, 41, 59, 0.05);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 16px;
-    border-left: 4px solid #1e293b;
+    background: rgba(30, 41, 59, 0.8);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 20px;
+    border-left: 4px solid #fbbf24;
     opacity: 0;
     transform: translateX(-20px);
     transition: all 0.4s ease;
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    backdrop-filter: blur(10px);
 }
 
 .biomarker-item.animate {
@@ -2375,17 +2364,16 @@ h4 { font-size: 1.25rem; }
 }
 
 .biomarker-item h5 {
-    color: #0f172a;
+    color: #fbbf24;
     font-weight: 600;
     margin-bottom: 8px;
     font-size: 1rem;
 }
 
 .biomarker-item p {
-    color: #475569;
+    color: #cbd5e1;
     font-size: 0.9rem;
 }
-
 
 /* Transition Section */
 .transition-section {

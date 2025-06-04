@@ -2,7 +2,6 @@ let currentUser = 1;
 
 // Luna Character Interactions
 const lunaMessages = [
-  "Hello! I'm Luna, your sleep guide! 🌙",
   "Did you know your heart rate drops during sleep? ❤️",
   "Sleep is when your body repairs itself! ✨",
   "Melatonin helps you feel sleepy! 💤",
@@ -20,7 +19,7 @@ function showDefaultPrompt() {
   const lunaMouth = document.getElementById('luna-mouth');
   
   if (lunaSpeech) {
-    lunaSpeech.textContent = "Click on me to learn more! 👆✨";
+    lunaSpeech.textContent = "Hello! I'm Luna, your sleep guide! 🌙";
     lunaSpeech.classList.add('show');
     lunaMouth.classList.add('happy');
   }
