@@ -3,282 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>What'sYourSleepStory - Sleep Clock Viewer</title>
+    <title>What's Your Sleep Story | Sleep Clock Viewer</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Hero Section -->
-    <header class="hero-section">
-        <div class="hero-content">
-            <h1 class="hero-title">What's Your Sleep Story?</h1>
-            <p class="hero-subtitle">Journey through the mysteries of sleep with Luna, your celestial guide to understanding rest and recovery</p>
-            <div class="hero-divider"></div>
-        </div>
-         <!-- Enhanced Luna Character -->
-         <div class="luna-container">
-            <div class="luna-character" onclick="interactWithLuna()">
-                <div class="luna-body">
-                    <div class="luna-face">
-                        <div class="luna-eyes">
-                            <div class="luna-eye" id="left-eye"></div>
-                            <div class="luna-eye" id="right-eye"></div>
-                        </div>
-                        <div class="luna-mouth" id="luna-mouth"></div>
-                        <div class="luna-cheek left"></div>
-                        <div class="luna-cheek right"></div>
-                    </div>
-                </div>
-                <div class="luna-sparkles">
-                    <div class="sparkle sparkle-1">✨</div>
-                    <div class="sparkle sparkle-2">⭐</div>
-                    <div class="sparkle sparkle-3">💫</div>
-                    <div class="sparkle sparkle-4">🌟</div>
-                </div>
-                <div class="luna-speech" id="luna-speech">
-                    Welcome to your sleep journey! Click me to learn more! 🌙
-                </div>
-            </div>
-        </div>
-    </header>
+    <!-- Navigation Menu -->
+    <nav class="page-navigation">
+        <div class="nav-item active" onclick="navigateTo('main')">Home</div>
+        <div class="nav-item" onclick="navigateTo('quiz')">Sleep Quiz</div>
+        <div class="nav-item" onclick="navigateTo('sleepClock')">Sleep Clock</div>
+        <div class="nav-item" onclick="navigateTo('dashboard')">Dashboard</div>
+    </nav>
 
-    <div class="main-container">
-        <!-- Heart Rate Analysis Section -->
-        <section class="analysis-section">
-            <div class="luna-mini"></div>
-            <div class="section-header">
-                <h2 class="section-title">Heart Rate Analysis</h2>
-                <p class="section-description">Understanding your body's rhythm between sleep and wakefulness</p>
-            </div>
-            
-            <div class="dual-content-layout">
-                <div class="chart-container" id="dualLineContainer">
-                    <div id="loadingMessage">⏳ Luna is analyzing your heart's rhythm...</div>
-                    <div id="dualLineTitle"></div>
-                    <div id="dual-line-chart"></div>
-                    <div id="tooltip_density" class="tooltip"></div>
-                </div>
-                
-                <div class="insights-panel" id="hr-density-writeup">
-                    <div class="insights-header">
-                        <div class="insight-icon">❤️</div>
-                        <h3>Heart Rate Insights</h3>
+    <!-- Global Luna Character - appears on all pages -->
+    <div class="luna-container global-luna">
+        <div class="luna-character" onclick="interactWithLuna()">
+            <div class="luna-body">
+                <div class="luna-face">
+                    <div class="luna-eyes">
+                        <div class="luna-eye" id="left-eye"></div>
+                        <div class="luna-eye" id="right-eye"></div>
                     </div>
-                    
-                    <div class="insight-content">
-                        <p class="insight-lead">Your heart doesn't just beat at a constant pace—it follows <strong>a dynamic rhythm influenced by sleep stages, activity, and recovery processes</strong>.</p>
-                        
-                        <div class="key-stats">
-                            <div class="stat-item">
-                                <div class="stat-number">60.1</div>
-                                <div class="stat-label">BPM Sleep Avg</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-number">81.7</div>
-                                <div class="stat-label">BPM Awake Avg</div>
-                            </div>
-                        </div>
-                        
-                        <div class="insights-list">
-                            <div class="insight-point">
-                                <div class="point-marker"></div>
-                                <span><strong>Natural slowdown:</strong> Your body shifts into recovery mode during sleep</span>
-                            </div>
-                            <div class="insight-point">
-                                <div class="point-marker"></div>
-                                <span><strong>Active engagement:</strong> Higher heart rates reflect daily activities and stress</span>
-                            </div>
-                            <div class="insight-point">
-                                <div class="point-marker"></div>
-                                <span><strong>Recovery window:</strong> Sleep enables cardiovascular restoration</span>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="luna-mouth" id="luna-mouth"></div>
+                    <div class="luna-cheek left"></div>
+                    <div class="luna-cheek right"></div>
                 </div>
             </div>
-        </section>
+            <div class="luna-sparkles">
+                <div class="sparkle sparkle-1">✨</div>
+                <div class="sparkle sparkle-2">⭐</div>
+                <div class="sparkle sparkle-3">💫</div>
+                <div class="sparkle sparkle-4">🌟</div>
+            </div>
+            <div class="luna-speech" id="luna-speech">
+                Welcome to your sleep journey! Click me to learn more! 🌙
+            </div>
+        </div>
+    </div>
 
-        <!-- Hormone Analysis Section -->
-        <section class="analysis-section hormone-section">
-            <div class="luna-mini"></div>
-            <div class="section-header">
-                <h2 class="section-title">Hormone Balance</h2>
-                <p class="section-description">How cortisol and melatonin orchestrate your sleep-wake cycle</p>
+    <!-- Main Page -->
+    <div id="mainPage" class="page active-page">
+        <!-- Hero Section -->
+        <header class="hero-section">
+            <div class="hero-content main-page-element">
+                <h1 class="hero-title">What's Your Sleep Story?</h1>
+                <p class="hero-subtitle">Journey through the mysteries of sleep with Luna, your celestial guide to understanding rest and recovery</p>
+                <div class="hero-divider"></div>
+                <button class="cta-button" onclick="navigateTo('quiz')">
+                    Start Your Sleep Journey
+                    <div class="button-glow"></div>
+                </button>
             </div>
-            
-            <div class="dual-content-layout reverse">
-                <div class="insights-panel" id="hormone-chart-writeup">
-                    <div class="insights-header">
-                        <div class="insight-icon">🧬</div>
-                        <h3>Hormone Dynamics</h3>
+        </header>
+
+
+
+        <!-- Main Container - Unified Background -->
+        <div class="main-container main-page-element">
+            <!-- Heart Rate Analysis Section -->
+            <section class="analysis-section">
+                <div class="luna-mini"></div>
+                <div class="section-header">
+                    <h2 class="section-title">Heart Rate Analysis</h2>
+                    <p class="section-description">Understanding your body's rhythm between sleep and wakefulness</p>
+                </div>
+
+                <div class="dual-content-layout">
+                    <div class="chart-container" id="dualLineContainer">
+                        <div id="loadingMessage">⏳ Luna is analyzing your heart's rhythm...</div>
+                        <div id="dualLineTitle"></div>
+                        <div id="dual-line-chart"></div>
+                        <div id="tooltip_density" class="tooltip"></div>
                     </div>
-                    
-                    <div class="insight-content">
-                        <p class="insight-lead">Two key hormones work in harmony to regulate your sleep cycle: <strong>cortisol for alertness</strong> and <strong>melatonin for rest</strong>.</p>
-                        
-                        <div class="hormone-explainer">
-                            <div class="hormone-item cortisol-item">
-                                <div class="hormone-dot cortisol-dot"></div>
-                                <div class="hormone-info">
-                                    <h4>Cortisol (ng/mL)</h4>
-                                    <p>The alertness hormone that peaks in the morning to kickstart your day</p>
+
+                    <div class="insights-panel" id="hr-density-writeup">
+                        <div class="insights-header">
+                            <div class="insight-icon">❤️</div>
+                            <h3>Heart Rate Insights</h3>
+                        </div>
+
+                        <div class="insight-content">
+                            <p class="insight-lead">Your heart doesn't just beat at a constant pace—it follows <strong>a dynamic rhythm influenced by sleep stages, activity, and recovery processes</strong>.</p>
+
+                            <div class="key-stats">
+                                <div class="stat-item">
+                                    <div class="stat-number">60.1</div>
+                                    <div class="stat-label">BPM Sleep Avg</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">81.7</div>
+                                    <div class="stat-label">BPM Awake Avg</div>
                                 </div>
                             </div>
-                            <div class="hormone-item melatonin-item">
-                                <div class="hormone-dot melatonin-dot"></div>
-                                <div class="hormone-info">
-                                    <h4>Melatonin (pg/mL)</h4>
-                                    <p>The sleep hormone that rises before bedtime and fades upon waking</p>
+
+                            <div class="insights-list">
+                                <div class="insight-point">
+                                    <div class="point-marker"></div>
+                                    <span><strong>Natural slowdown:</strong> Your body shifts into recovery mode during sleep</span>
+                                </div>
+                                <div class="insight-point">
+                                    <div class="point-marker"></div>
+                                    <span><strong>Active engagement:</strong> Higher heart rates reflect daily activities and stress</span>
+                                </div>
+                                <div class="insight-point">
+                                    <div class="point-marker"></div>
+                                    <span><strong>Recovery window:</strong> Sleep enables cardiovascular restoration</span>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="unit-note">
-                            <p><strong>Note:</strong> Cortisol measures in nanograms (1,000x larger than picograms), reflecting its higher concentration needed for metabolic regulation.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Hormone Analysis Section -->
+            <section class="analysis-section hormone-section">
+                <div class="luna-mini"></div>
+                <div class="section-header">
+                    <h2 class="section-title">Hormone Balance</h2>
+                    <p class="section-description">How cortisol and melatonin orchestrate your sleep-wake cycle</p>
+                </div>
+
+                <div class="dual-content-layout reverse">
+                    <div class="insights-panel" id="hormone-chart-writeup">
+                        <div class="insights-header">
+                            <div class="insight-icon">🧬</div>
+                            <h3>Hormone Dynamics</h3>
+                        </div>
+
+                        <div class="insight-content">
+                            <p class="insight-lead">Two key hormones work in harmony to regulate your sleep cycle: <strong>cortisol for alertness</strong> and <strong>melatonin for rest</strong>.</p>
+
+                            <div class="hormone-explainer">
+                                <div class="hormone-item cortisol-item">
+                                    <div class="hormone-dot cortisol-dot"></div>
+                                    <div class="hormone-info">
+                                        <h4>Cortisol (ng/mL)</h4>
+                                        <p>The alertness hormone that peaks in the morning to kickstart your day</p>
+                                    </div>
+                                </div>
+                                <div class="hormone-item melatonin-item">
+                                    <div class="hormone-dot melatonin-dot"></div>
+                                    <div class="hormone-info">
+                                        <h4>Melatonin (pg/mL)</h4>
+                                        <p>The sleep hormone that rises before bedtime and fades upon waking</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="unit-note">
+                                <p><strong>Note:</strong> Cortisol measures in nanograms (1,000x larger than picograms), reflecting its higher concentration needed for metabolic regulation.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="chart-container" id="cortisolMelatoninChart">
-                </div>
-                <div id="tooltip_mel" class="tooltip"></div>
-            </div>
-        </section>
-    </div>
 
-    <!-- Sleep Quality Dashboard -->
-    <div class="dashboard">
-        <div class="header">
-            <h1 class="section-title">Sleep Quality Dashboard</h1>
-            <p>Explore relationships between lifestyle factors and sleep quality metrics</p>
-        </div>
-        
-        <div class="controls">
-            <div class="control-group">
-                <label>Sleep Duration (hours)</label>
-                <input type="range" id="duration-slider" class="slider" min="3.3" max="8.2" step="0.1" value="7.0">
-                <span id="duration-value">8.0h</span>
-            </div>
-            
-            <div class="control-group">
-                <label>Stress Level</label>
-                <input type="range" id="stress-slider" class="slider" min="10" max="74" step="1" value="30">
-                <span id="stress-value">25</span>
-            </div>
-            
-            <div class="control-group">
-                <label>Age Range</label>
-                <input type="range" id="age-slider" class="slider" min="20" max="40" step="1" value="30">
-                <span id="age-value">35</span>
-            </div>
-            
-            <div class="control-group">
-                <label>Activity Level</label>
-                <input type="range" id="activity-slider" class="slider" min="600" max="4010" step="100" value="1000">
-                <span id="activity-value">5</span>
-            </div>
-        </div>
-        
-        <div class="charts-grid">
-            <div class="chart-container" id="dashboard">
-                <div class="chart-title">Sleep Efficiency vs Duration</div>
-                <svg id="efficiency-chart" width="400" height="300"></svg>
-            </div>
-            
-            <div class="chart-container">
-                <div class="chart-title">WASO by Stress Level</div>
-                <svg id="waso-chart" width="400" height="300"></svg>
-            </div>
-        </div>
-        
-        <div class="charts-grid">
-            <div class="chart-container">
-                <div class="chart-title">Sleep Latency Distribution</div>
-                <svg id="latency-chart" width="400" height="300"></svg>
-            </div>
-            
-            <div class="chart-container">
-                <div class="chart-title">Awakenings by Age</div>
-                <svg id="awakenings-chart" width="400" height="300"></svg>
-            </div>
-        </div>
-        
-        <div class="bottom-row">
-            <div class="metric-card">
-                <div class="metric-value avg-metric" id="avg-efficiency">--</div>
-                <div class="metric-label">Average Sleep Efficiency</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-value avg-metric" id="avg-waso">--</div>
-                <div class="metric-label">Average WASO (min)</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-value avg-metric" id="avg-latency">--</div>
-                <div class="metric-label">Average Sleep Latency (min)</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Activity Impact Analysis -->
-    <div class="activity-section">
-        <div class="section-title">Activity Impact Analysis</div>
-        
-        <div class="charts-grid">
-            <div class="chart-container">
-                <div class="activity-controls">
-                    <div class="control-group">
-                        <label>Movement Type</label>
-                        <select id="movement-select">
-                            <option value="light">Light Movement</option>
-                            <option value="medium">Medium Movement</option>
-                            <option value="heavy">Heavy Movement</option>
-                        </select>
+                    <div class="chart-container" id="cortisolMelatoninChart">
                     </div>
                 </div>
-                <div class="chart-title">Movement vs Sleep Latency</div>
-                <svg id="movement-chart" width="400" height="300"></svg>
-            </div>
-            
-            <div class="chart-container">
-                <div class="activity-controls">
-                    <div class="control-group">
-                        <label>Screen Type</label>
-                        <select id="screen-select">
-                            <option value="small">Small Screen</option>
-                            <option value="large">Large Screen</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="chart-title">Screen Time vs WASO</div>
-                <svg id="screen-chart" width="400" height="300"></svg>
-            </div>
+            </section>
+
+
         </div>
     </div>
 
-    <!-- Sleep Quiz Section -->
-    <div class="transition-section">
-        <h1>Connecting Sleep Physiology to Personalized Insights</h1>
-        <p>
-            We've explored how <strong>heart rate changes between sleep and wakefulness</strong>, providing insights into your body's recovery process.
-            But sleep quality isn't just about heart rate, it's also driven by <strong>hormonal fluctuations like cortisol and melatonin</strong>. 
-            Cortisol helps you wake up and stay alert, while melatonin signals when it's time to sleep. 
-            The delicate balance between these hormones can impact how restful your night truly is.
-        </p>
-        <p>
-            To take sleep analysis a step further, we introduce the <strong>Sleep Biometric Predictor</strong> which is a science-backed tool that predicts 
-            <strong>stress hormone levels and sleep quality</strong> based on your individual patterns. 
-            This predictor also <strong>matches you with a sleeper most similar to you</strong>, helping you compare habits and uncover 
-            personalized insights to optimize your rest.
-        </p>
-    </div>
-
-    <div class="container">
-        <div class="header">
-            <h1>Meet Your Sleep Twin 🌙</h1>
-            <p>Let Luna help you discover the sleeper most like you — and explore what their patterns reveal about yours.</p>
-        </div>
-
+    <!-- Quiz Page -->
+    <div id="quizPage" class="page">
         <div class="interactive-info" id="interactiveInfo">
             <div class="info-progress" id="progressDots">
                 <div class="progress-dot active"></div>
@@ -304,15 +194,15 @@
             <div class="quiz-progress">
                 <div class="quiz-progress-fill" id="quizProgressFill"></div>
             </div>
-        
+
             <div class="quiz-header">
                 <div class="question-counter" id="questionCounter">Question 1 of 6</div>
                 <div class="quiz-title">Sleep Pattern Assessment</div>
             </div>
-        
+
             <form id="sleepQuiz">
                 <div class="question-container" id="questionContainer">
-                    
+
                     <div class="question active" id="question1">
                         <h3>What's your age?</h3>
                         <div class="slider-container">
@@ -320,7 +210,7 @@
                             <div class="slider-value" id="ageValue">27 years</div>
                         </div>
                     </div>
-        
+
                     <div class="question" id="question2">
                         <h3>How many hours do you typically sleep per night?</h3>
                         <div class="slider-container">
@@ -328,7 +218,7 @@
                             <div class="slider-value" id="sleepHoursValue">7 hours</div>
                         </div>
                     </div>
-        
+
                     <div class="question" id="question3">
                         <h3>How would you rate your daily stress level?</h3>
                         <div class="radio-group">
@@ -355,7 +245,7 @@
                         </div>
                         <div class="answer-validation" id="stressValidation">Please select your stress level</div>
                     </div>
-        
+
                     <div class="question" id="question4">
                         <h3>How long does it typically take you to fall asleep?</h3>
                         <div class="slider-container">
@@ -363,7 +253,7 @@
                             <div class="slider-value" id="sleepLatencyValue">10 minutes</div>
                         </div>
                     </div>
-        
+
                     <div class="question" id="question5">
                         <h3>How many times do you typically wake up during the night?</h3>
                         <div class="slider-container">
@@ -371,7 +261,7 @@
                             <div class="slider-value" id="nightAwakeningsValue">5 times</div>
                         </div>
                     </div>
-        
+
                     <div class="question" id="question6">
                         <h3>Are you naturally a morning person or evening person?</h3>
                         <div class="radio-group">
@@ -398,9 +288,8 @@
                         </div>
                         <div class="answer-validation" id="chronotypeValidation">Please select your chronotype</div>
                     </div>
-        
                 </div>
-        
+
                 <div class="quiz-controls">
                     <button type="button" class="quiz-nav-btn" id="prevQuestion" disabled>
                         ← Previous
@@ -422,104 +311,178 @@
         </div>
     </div>
 
-    <div class="narrative-transition" id="transition2" style="display: none;">
-        <div class="transition-icon">⚡</div>
-        <h2 class="transition-title">Now Let's Optimize Your Sleep</h2>
-        <p class="transition-text">
-            Great! You've found your sleep twin and learned about your patterns. 
-            Now let's explore how small changes in lifestyle factors could improve your sleep quality.
-        </p>
-        <button class="transition-button" onclick="showDashboard()">
-            Optimize Your Sleep
-        </button>
-    </div>
-
-    <!-- Individual Sleep Stories Section -->
-    <section class="interactive-section">
-        <div class="section-header">
-            <h1 class="section-title">Individual Sleep Stories</h1>
-            <p class="section-description">Matched to your sleep twin — look at how their nights compares to yours.</p>
+    <!-- Sleep Clock Page -->
+    <div id="sleepClockPage" class="page">
+        <div class="page-header">
+            <h1 class="page-title">Individual Sleep Stories</h1>
+            <p class="page-subtitle">Explore detailed sleep patterns from the MMASH study participants.</p>
         </div>
-        
-        <div class="button-wrapper">
-            <div class="pulse-ring"></div>
-            <button id="toggleUserView" class="toggle-button">
-                <span class="button-text">🔍 Explore Individual Data</span>
-                <span class="icon">▼</span>
+
+        <!-- Sleep Twin Button - Show if user has completed quiz -->
+        <div id="sleepTwinSection" class="sleep-twin-section" style="display: none;">
+            <button id="goToSleepTwin" class="sleep-twin-button">
+                🌟 Go to Your Sleep Twin
             </button>
+            <p class="sleep-twin-description">Jump directly to your matched participant's sleep data</p>
         </div>
-    </section>
 
-    <!-- User-Specific Sections: Initially Hidden -->
-    <div id="userSpecificSection" class="user-section">
-        <!-- User Selection Navigation -->
+        <!-- User Selection Navigation - Always Visible -->
         <div class="user-nav-container">
             <h3 class="nav-title">Select a Participant</h3>
             <div id="participantNav"></div>
         </div>
 
-        <div class="user-analysis">
-            <!-- Sleep Clock and Metrics -->
-            <section class="sleep-overview">
-                <div class="sleep-container-wrapper">
-                    <div class="clock-container" id="sleepClockContainer">
-                        <div id="tooltip_sleep" class="tooltip"></div>
-                        <div class="sleep-definitions">
-                            <h3>Understanding Sleep Metrics</h3>
-                            <p><strong>🛌 Sleep Duration:</strong> The total time spent sleeping, from sleep onset to wake-up.</p>
-                            <p><strong>⏰ Wake After Sleep Onset (WASO):</strong> The total time spent awake after falling asleep. Frequent awakenings can disrupt sleep quality.</p>
-                            <p><strong>📊 Sleep Efficiency:</strong> The percentage of time spent sleeping compared to total time in bed. Higher efficiency means better rest.</p>
-                            <p><strong>🌙 Sleep Onset:</strong> The time it takes to transition from wakefulness into sleep.</p>
-                        </div>
-                    </div>
-                    <div class="sleep-metrics">
-                        <h3 class="metrics-title">Sleep Summary</h3>
-                        <div class="metrics-grid">
-                            <div class="metric-box">
-                                <div class="metric-icon">🛌</div>
-                                <div class="metric-title">Sleep Duration</div>
-                                <div class="metric-value sleep-metric" id="sleepDuration">--</div>
-                            </div>
-                            <div class="metric-box">
-                                <div class="metric-icon">📊</div>
-                                <div class="metric-title">Sleep Efficiency</div>
-                                <div class="metric-value sleep-metric" id="sleepEfficiency">--</div>
-                            </div>
-                            <div class="metric-box">
-                                <div class="metric-icon">⏰</div>
-                                <div class="metric-title">Wake After Sleep Onset (WASO)</div>
-                                <div class="metric-value sleep-metric" id="wasoValue">--</div>
-                            </div>
-                            <div class="metric-box">
-                                <div class="metric-icon">🌙</div>
-                                <div class="metric-title">Sleep Onset</div>
-                                <div class="metric-value sleep-metric" id="sleepOnset">--</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+        <!-- User-Specific Sections -->
+        <div id="userSpecificSection" class="user-section">
 
-            <!-- Heart Rate Time Series -->
-            <section class="hr-timeline-section">
-                <div id="hrGraphContainer">
-                    <div id="hrGraphTitle">24-Hour Heart Rate Journey</div>
-                    <div id="hrGraphWrapper">
-                        <div id="hrGraphChart"></div>
-                        <div id="hrStatsContainer">
-                            <div id="overallStats" class="stats-panel">
-                                <h3>Overall Statistics</h3>
-                                <div id="overallStatsContent"></div>
+            <div class="user-analysis">
+                <!-- Sleep Clock and Metrics -->
+                <section class="sleep-overview">
+                    <div class="sleep-container-wrapper">
+                        <div class="clock-container" id="sleepClockContainer">
+                            <div id="tooltip_sleep" class="tooltip"></div>
+                            <div class="sleep-definitions">
+                                <h3>Understanding Sleep Metrics</h3>
+                                <p><strong>🛌 Sleep Duration:</strong> The total time spent sleeping, from sleep onset to wake-up.</p>
+                                <p><strong>⏰ Wake After Sleep Onset (WASO):</strong> The total time spent awake after falling asleep. Frequent awakenings can disrupt sleep quality.</p>
+                                <p><strong>📊 Sleep Efficiency:</strong> The percentage of time spent sleeping compared to total time in bed. Higher efficiency means better rest.</p>
+                                <p><strong>🌙 Sleep Onset:</strong> The time it takes to transition from wakefulness into sleep.</p>
                             </div>
-                            <div id="sleepStats" class="stats-panel">
-                                <h3>Sleep Period</h3>
-                                <div id="sleepStatsContent"></div>
+                        </div>
+                        <div class="sleep-metrics">
+                            <h3 class="metrics-title">Sleep Summary</h3>
+                            <div class="metrics-grid">
+                                <div class="metric-box">
+                                    <div class="metric-icon">🛌</div>
+                                    <div class="metric-title">Sleep Duration</div>
+                                    <div class="metric-value sleep-metric" id="sleepDuration">--</div>
+                                </div>
+                                <div class="metric-box">
+                                    <div class="metric-icon">📊</div>
+                                    <div class="metric-title">Sleep Efficiency</div>
+                                    <div class="metric-value sleep-metric" id="sleepEfficiency">--</div>
+                                </div>
+                                <div class="metric-box">
+                                    <div class="metric-icon">⏰</div>
+                                    <div class="metric-title">Wake After Sleep Onset (WASO)</div>
+                                    <div class="metric-value sleep-metric" id="wasoValue">--</div>
+                                </div>
+                                <div class="metric-box">
+                                    <div class="metric-icon">🌙</div>
+                                    <div class="metric-title">Sleep Onset</div>
+                                    <div class="metric-value sleep-metric" id="sleepOnset">--</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+
+                <!-- Heart Rate Time Series -->
+                <section class="hr-timeline-section">
+                    <div id="hrGraphContainer">
+                        <div id="hrGraphTitle">24-Hour Heart Rate Journey</div>
+                        <div id="hrGraphWrapper">
+                            <div id="hrGraphChart"></div>
+                            <div id="hrStatsContainer">
+                                <div id="overallStats" class="stats-panel">
+                                    <h3>Overall Statistics</h3>
+                                    <div id="overallStatsContent"></div>
+                                </div>
+                                <div id="sleepStats" class="stats-panel">
+                                    <h3>Sleep Period</h3>
+                                    <div id="sleepStatsContent"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboardPage" class="page">
+        <div class="page-header">
+            <h1 class="page-title">Sleep Quality Dashboard</h1>
+            <p class="page-subtitle">Explore relationships between lifestyle factors and sleep quality metrics</p>
+        </div>
+
+
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <div class="chart-title">Sleep Efficiency vs Duration</div>
+                    <svg id="efficiency-chart" width="400" height="300"></svg>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-title">WASO by Stress Level</div>
+                    <svg id="waso-chart" width="400" height="300"></svg>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <div class="chart-title">Sleep Latency Distribution</div>
+                    <svg id="latency-chart" width="400" height="300"></svg>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-title">Awakenings by Age</div>
+                    <svg id="awakenings-chart" width="400" height="300"></svg>
+                </div>
+            </div>
+
+            <div class="bottom-row">
+                <div class="metric-card">
+                    <div class="metric-value avg-metric" id="avg-efficiency">--</div>
+                    <div class="metric-label">Average Sleep Efficiency</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value avg-metric" id="avg-waso">--</div>
+                    <div class="metric-label">Average WASO (min)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value avg-metric" id="avg-latency">--</div>
+                    <div class="metric-label">Average Sleep Latency (min)</div>
+                </div>
+            </div>
+
+            <!-- Activity Impact Analysis -->
+            <div class="activity-section">
+                <div class="section-title">Activity Impact Analysis</div>
+
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <div class="activity-controls">
+                            <div class="control-group">
+                                <label>Movement Type</label>
+                                <select id="movement-select">
+                                    <option value="light">Light Movement</option>
+                                    <option value="medium">Medium Movement</option>
+                                    <option value="heavy">Heavy Movement</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="chart-title">Movement vs Sleep Latency</div>
+                        <svg id="movement-chart" width="400" height="300"></svg>
+                    </div>
+
+                    <div class="chart-container">
+                        <div class="activity-controls">
+                            <div class="control-group">
+                                <label>Screen Type</label>
+                                <select id="screen-select">
+                                    <option value="small">Small Screen</option>
+                                    <option value="large">Large Screen</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="chart-title">Screen Time vs WASO</div>
+                        <svg id="screen-chart" width="400" height="300"></svg>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 
     <div class="tooltip" id="tooltip"></div>
