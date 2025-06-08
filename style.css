@@ -591,7 +591,7 @@ body::before {
 /* Enhanced Hero Section with Luna */
 .hero-section {
     position: relative;
-    min-height: 100vh;
+    min-height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2921,7 +2921,7 @@ h4 { font-size: 1.25rem; }
 /* Transition Section */
 .transition-section {
     max-width: 900px;
-    margin: 60px auto;
+    margin: 30px auto;
     padding: 40px 20px;
     text-align: center;
     font-size: 18px;
@@ -2942,9 +2942,9 @@ h4 { font-size: 1.25rem; }
 
 /* new styles for the dashboard */
 .activity-section {
-    margin-top: 70px;
-    margin-bottom: 20px;
-    padding: 80px 20px;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    padding: 30px 20px;
 }
 
 .section-title {
@@ -3104,21 +3104,7 @@ h4 { font-size: 1.25rem; }
      display: inline-block;
      cursor: help;
  }
- 
- .chart-title::after {
-     content: '?';
-     display: inline-block;
-     width: 16px;
-     height: 16px;
-     background: #3498db;
-     color: white;
-     border-radius: 50%;
-     font-size: 12px;
-     text-align: center;
-     line-height: 16px;
-     margin-left: 8px;
-     cursor: help;
- }
+
  
  .title-tooltip {
      position: absolute;
@@ -3186,3 +3172,56 @@ h4 { font-size: 1.25rem; }
     z-index: 1000;
     pointer-events: all;
 }
+
+/* Ensure parent section allows relative positioning */
+.luna-conclusion-section {
+    position: relative;
+    padding: 2rem 0;
+}
+
+/* Expand the Conclusion Container */
+.conclusion-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Align everything to the left */
+    gap: 3rem; /* Adjust space between elements */
+    max-width: 1100px; /* Make it larger */
+    min-height: 450px; /* Increase height */
+    margin: 30px auto;
+    padding: 10px 30px; /* More padding for spacious layout */
+    text-align: center;
+    font-size: 18px;
+    color: #e2e8f0;
+    line-height: 1.6;
+    background: transparent;
+    position: relative; /* Enables absolute positioning inside */
+}
+
+/* Position Luna Down and to the Left */
+.conclusion-luna {
+    position: absolute; /* Allows free movement */
+    left: 550px; /* Moves Luna left */
+    bottom: 100px; /* Moves Luna downward */
+    transform: translateX(-40px); /* Extra left shift */
+    margin-top: 150px;
+}
+
+/* If Luna needs more spacing */
+.page-title {
+    text-align: center; /* Ensures the title is centered */
+    width: 100%; /* Makes sure it spans the container */
+    margin-bottom: 50px; /* Space between title and Luna */
+}
+
+/* Fine-tune Luna's character positioning */
+.conclusion-luna .luna-character {
+    position: relative;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+/* Adjust Luna's visibility within the section */
+.luna-character {
+    transform: translateX(-60px); /* Push Luna left */
+}
+

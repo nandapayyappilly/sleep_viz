@@ -2682,25 +2682,6 @@ Promise.all([
                 if (tooltips[titleText] && !title.querySelector('.help-icon')) {
                     title.style.position = 'relative';
                     
-                    const helpIcon = document.createElement('span');
-                    helpIcon.className = 'help-icon';
-                    helpIcon.innerHTML = '?';
-                    helpIcon.style.cssText = `
-                        display: inline-block;
-                        width: 18px;
-                        height: 18px;
-                        background: #3498db;
-                        color: white;
-                        border-radius: 50%;
-                        text-align: center;
-                        line-height: 18px;
-                        font-size: 12px;
-                        font-weight: bold;
-                        margin-left: 8px;
-                        cursor: pointer;
-                        vertical-align: middle;
-                        user-select: none;
-                    `;
                     
                     helpIcon.addEventListener('click', function(e) {
                         e.stopPropagation();
@@ -2754,28 +2735,6 @@ Promise.all([
             if (existingIcon) {
                 existingIcon.remove();
             }
-            
-            const helpIcon = document.createElement('button');
-            helpIcon.className = 'help-icon';
-            helpIcon.innerHTML = '?';
-            helpIcon.title = tooltipText; // This adds a browser tooltip
-            
-            helpIcon.style.cssText = `
-                cursor: pointer !important;
-                background: #3498db !important;
-                color: white !important;
-                border: none !important;
-                border-radius: 50% !important;
-                width: 20px !important;
-                height: 20px !important;
-                font-size: 12px !important;
-                font-weight: bold !important;
-                margin-left: 8px !important;
-                vertical-align: middle !important;
-                z-index: 9999 !important;
-                position: relative !important;
-                display: inline-block !important;
-            `;
             
             // Create custom tooltip popup
             helpIcon.addEventListener('click', function(e) {
@@ -2844,7 +2803,6 @@ Promise.all([
                 setTimeout(() => document.addEventListener('click', closeOutside), 100);
             });
             
-            titleElement.appendChild(helpIcon);
         }
 
 
@@ -4475,3 +4433,88 @@ function highlightSleepTwin(participantId) {
 window.navigateTo = navigateTo;
 window.interactWithLuna = interactWithLuna;
 window.viewSleepTwinClock = viewSleepTwinClock;
+
+
+// Conclusion Luna interaction messages
+const conclusionMessages = [
+    "I hope you enjoyed your sleep journey! Sweet dreams! 🌙✨",
+    "Remember, good sleep is the key to a happy life! 😴💤",
+    "Thanks for letting me guide you through your sleep discovery! 🌟",
+    "May your nights be restful and your dreams be sweet! 🌙💫",
+    "Sleep well, dream big, and wake up refreshed! ✨🌅"
+];
+
+let conclusionMessageIndex = 0;
+
+function interactWithConclusionLuna() {
+    const conclusionSpeech = document.getElementById('conclusion-luna-speech');
+    const leftEye = document.querySelector('.conclusion-left-eye');
+    const rightEye = document.querySelector('.conclusion-right-eye');
+    const lunaMouth = document.querySelector('.conclusion-luna-mouth');
+    
+    // Make Luna extra happy
+    if (leftEye && rightEye) {
+        leftEye.style.animation = 'conclusionEyeGlow 0.5s ease-in-out';
+        rightEye.style.animation = 'conclusionEyeGlow 0.5s ease-in-out';
+    }
+    
+    if (lunaMouth) {
+        lunaMouth.style.animation = 'conclusionMouthGlow 0.5s ease-in-out';
+    }
+    
+    // Cycle through conclusion messages
+    if (conclusionSpeech) {
+        conclusionSpeech.textContent = conclusionMessages[conclusionMessageIndex];
+        conclusionSpeech.style.animation = 'conclusionSpeechPulse 1s ease-in-out';
+        
+        // Reset animation after it completes
+        setTimeout(() => {
+            conclusionSpeech.style.animation = 'conclusionSpeechPulse 6s ease-in-out infinite';
+        }, 1000);
+    }
+    
+    // Cycle to next message
+    conclusionMessageIndex = (conclusionMessageIndex + 1) % conclusionMessages.length;
+    
+    // Animate all sparkles
+    const sparkles = document.querySelectorAll('.conclusion-luna .sparkle');
+    sparkles.forEach((sparkle, index) => {
+        setTimeout(() => {
+            sparkle.style.animation = 'conclusionSparkleFloat 2s ease-in-out';
+            setTimeout(() => {
+                sparkle.style.animation = 'conclusionSparkleFloat 4s ease-in-out infinite';
+            }, 2000);
+        }, index * 100);
+    });
+}
+
+// Initialize conclusion Luna when section comes into view
+function initializeConclusionLuna() {
+    const conclusionSection = document.querySelector('.luna-conclusion-section');
+    
+    if (!conclusionSection) return;
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Add a small delay for dramatic effect
+                setTimeout(() => {
+                    const conclusionSpeech = document.getElementById('conclusion-luna-speech');
+                    if (conclusionSpeech) {
+                        conclusionSpeech.style.opacity = '1';
+                        conclusionSpeech.style.visibility = 'visible';
+                    }
+                }, 500);
+            }
+        });
+    }, {
+        threshold: 0.3
+    });
+    
+    observer.observe(conclusionSection);
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    initializeConclusionLuna();
+});
